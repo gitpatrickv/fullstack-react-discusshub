@@ -1,0 +1,146 @@
+import {
+  Avatar,
+  Box,
+  Divider,
+  Flex,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalOverlay,
+  Text,
+} from "@chakra-ui/react";
+import { useState } from "react";
+import { SlLogout } from "react-icons/sl";
+import { useNavigate } from "react-router-dom";
+import pic from "../../assets/profpic.jpeg";
+
+import { useQueryClient } from "@tanstack/react-query";
+import ColorModeSwitch from "../../components/ColorModeSwitch";
+import { useAuthQueryStore } from "../../store/auth-store";
+import { useUserStore } from "../../store/user-store";
+import Login from "./Login";
+import Register from "./Register";
+const NavTop = () => {
+  const navigate = useNavigate();
+  const [isLogin, setIsLogin] = useState<boolean>(true);
+  const { picture, resetUser } = useUserStore();
+  const queryClient = useQueryClient();
+  const { authStore, logout, isOpen, onOpen, onClose } = useAuthQueryStore();
+  const jwtToken = authStore.jwtToken;
+  const handleLoginClick = (value: boolean) => {
+    setIsLogin(value);
+    onOpen();
+  };
+
+  const handleLogoutClick = () => {
+    navigate("/");
+    setTimeout(() => {
+      resetUser();
+      queryClient.setQueryData(["user"], null);
+      logout();
+    }, 200);
+  };
+
+  const textStyles = {
+    cursor: "pointer",
+    userSelect: "none" as "none",
+    _hover: {
+      textDecoration: "underline",
+    },
+    color: "white",
+  };
+
+  return (
+    <>
+      {jwtToken ? (
+        <Flex justifyContent="end" alignItems="center">
+          <Menu>
+            <MenuButton aria-label="menu" userSelect="none" mr="5px">
+              <Avatar src={picture || pic} size="sm" />
+            </MenuButton>
+            <MenuList borderRadius="none" position="relative" py={0}>
+              <MenuItem paddingBottom={3} paddingTop={3}>
+                <Avatar src={picture || pic} size="xs" />
+                <Text ml="16px">View Profile</Text>
+              </MenuItem>
+              <MenuItem
+                onClick={handleLogoutClick}
+                paddingBottom={3}
+                paddingTop={3}
+              >
+                <SlLogout size="20px" />
+                <Text ml="20px">Logout</Text>
+              </MenuItem>
+            </MenuList>
+          </Menu>
+          <ColorModeSwitch />
+        </Flex>
+      ) : (
+        <Flex justifyContent="end">
+          <Text
+            mr="10px"
+            onClick={() => handleLoginClick(true)}
+            {...textStyles}
+          >
+            LOGIN
+          </Text>
+          <Text onClick={() => handleLoginClick(false)} {...textStyles}>
+            SIGNUP
+          </Text>
+        </Flex>
+      )}
+
+      <Box>
+        <Modal isOpen={isOpen} onClose={onClose} size="md" isCentered>
+          <ModalOverlay />
+          <ModalContent borderRadius="none">
+            <ModalCloseButton />
+            <ModalBody mt="10px">
+              <Box>
+                <Flex justifyContent="space-evenly" alignItems="center">
+                  <Text
+                    fontSize="x-large"
+                    fontWeight="semibold"
+                    textTransform="capitalize"
+                    cursor="pointer"
+                    onClick={() => setIsLogin(true)}
+                    color={isLogin ? "white.500" : "gray.500"}
+                    userSelect="none"
+                  >
+                    Login
+                  </Text>
+                  <Divider
+                    orientation="vertical"
+                    height="30px"
+                    borderColor="gray.300"
+                    ml="10px"
+                  />
+                  <Text
+                    fontSize="x-large"
+                    fontWeight="semibold"
+                    textTransform="capitalize"
+                    cursor="pointer"
+                    onClick={() => setIsLogin(false)}
+                    color={isLogin ? "gray.500" : "white.500"}
+                    userSelect="none"
+                  >
+                    Register
+                  </Text>
+                </Flex>
+                <Divider mb="15px" mt="15px" />
+                {isLogin ? <Login /> : <Register />}
+              </Box>
+            </ModalBody>
+          </ModalContent>
+        </Modal>
+      </Box>
+    </>
+  );
+};
+
+export default NavTop;
