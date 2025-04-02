@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { SlLogout } from "react-icons/sl";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import pic from "../../assets/profpic.jpeg";
 
 import { useQueryClient } from "@tanstack/react-query";
@@ -52,22 +52,24 @@ const NavTop = () => {
     _hover: {
       textDecoration: "underline",
     },
-    color: "white",
+    mr: "10px",
   };
 
   return (
     <>
-      {jwtToken ? (
-        <Flex justifyContent="end" alignItems="center">
+      <Flex justifyContent="end" alignItems="center">
+        {jwtToken ? (
           <Menu>
             <MenuButton aria-label="menu" userSelect="none" mr="5px">
               <Avatar src={picture || pic} size="sm" />
             </MenuButton>
             <MenuList borderRadius="none" position="relative" py={0}>
-              <MenuItem paddingBottom={3} paddingTop={3}>
-                <Avatar src={picture || pic} size="xs" />
-                <Text ml="16px">View Profile</Text>
-              </MenuItem>
+              <Link to="/profile">
+                <MenuItem paddingBottom={3} paddingTop={3}>
+                  <Avatar src={picture || pic} size="xs" />
+                  <Text ml="16px">View Profile</Text>
+                </MenuItem>
+              </Link>
               <MenuItem
                 onClick={handleLogoutClick}
                 paddingBottom={3}
@@ -78,22 +80,18 @@ const NavTop = () => {
               </MenuItem>
             </MenuList>
           </Menu>
-          <ColorModeSwitch />
-        </Flex>
-      ) : (
-        <Flex justifyContent="end">
-          <Text
-            mr="10px"
-            onClick={() => handleLoginClick(true)}
-            {...textStyles}
-          >
-            LOGIN
-          </Text>
-          <Text onClick={() => handleLoginClick(false)} {...textStyles}>
-            SIGNUP
-          </Text>
-        </Flex>
-      )}
+        ) : (
+          <>
+            <Text onClick={() => handleLoginClick(true)} {...textStyles}>
+              LOGIN
+            </Text>
+            <Text onClick={() => handleLoginClick(false)} {...textStyles}>
+              SIGNUP
+            </Text>
+          </>
+        )}
+        <ColorModeSwitch />
+      </Flex>
 
       <Box>
         <Modal isOpen={isOpen} onClose={onClose} size="md" isCentered>
