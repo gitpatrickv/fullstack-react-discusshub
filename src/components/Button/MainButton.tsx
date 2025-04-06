@@ -12,9 +12,9 @@ const MainButton = ({ children, type, ...props }: Props) => {
       _hover={{ bg: "#165BB7" }}
       _active={{ bg: "#165BB7" }}
       color="white"
+      borderRadius="none"
       type={type}
       {...props}
-      borderRadius="none"
     >
       {children}
     </Button>

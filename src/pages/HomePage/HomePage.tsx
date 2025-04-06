@@ -3,6 +3,7 @@ import { useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PostCard from "../../components/Post/PostCard";
 import useGetAllPosts from "../../hooks/useGetAllPosts";
+
 const HomePage = () => {
   const array = [1, 2, 3, 4, 5, 6];
   const sort = [

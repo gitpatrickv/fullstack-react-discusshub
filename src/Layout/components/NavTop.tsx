@@ -14,13 +14,13 @@ import {
   ModalOverlay,
   Text,
 } from "@chakra-ui/react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { SlLogout } from "react-icons/sl";
 import { Link, useNavigate } from "react-router-dom";
 import pic from "../../assets/profpic.jpeg";
-
-import { useQueryClient } from "@tanstack/react-query";
 import ColorModeSwitch from "../../components/ColorModeSwitch";
+import CreatePostModal from "../../components/modal/CreatePostModal";
 import { useAuthQueryStore } from "../../store/auth-store";
 import { useUserStore } from "../../store/user-store";
 import Login from "./Login";
@@ -58,6 +58,7 @@ const NavTop = () => {
   return (
     <>
       <Flex justifyContent="end" alignItems="center">
+        <CreatePostModal />
         {jwtToken ? (
           <Menu>
             <MenuButton aria-label="menu" userSelect="none" mr="5px">
@@ -67,7 +68,7 @@ const NavTop = () => {
               <Link to="/profile">
                 <MenuItem paddingBottom={3} paddingTop={3}>
                   <Avatar src={picture || pic} size="xs" />
-                  <Text ml="16px">View Profile</Text>
+                  <Text ml="16px">Profile</Text>
                 </MenuItem>
               </Link>
               <MenuItem

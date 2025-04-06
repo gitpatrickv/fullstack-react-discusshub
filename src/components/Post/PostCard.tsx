@@ -18,7 +18,11 @@ interface Props {
 const PostCard = ({ post }: Props) => {
   const { colorMode } = useColorMode();
   const time = new Date(post.createdDate);
-  const formattedPostTitle = post.title.toLowerCase().replace(/ /g, "_");
+  const formattedPostTitle = post.title
+    .toLowerCase()
+    .replace(/ /g, "_")
+    .replace(/[/ ]/g, "_");
+
   const navigate = useNavigate();
 
   const handleNavigateClick = () => {
@@ -51,6 +55,9 @@ const PostCard = ({ post }: Props) => {
         <Text fontSize="xl" fontWeight="semibold" mt="5px">
           {post.title}
         </Text>
+        {/* <Text mt="5px" noOfLines={4}>
+          {post.content}
+        </Text> */}
         <Text mt="5px">{post.content}</Text>
       </Box>
     </>
