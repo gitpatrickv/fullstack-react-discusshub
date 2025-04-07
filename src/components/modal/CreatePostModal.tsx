@@ -14,11 +14,18 @@ import useCreatePost from "../../hooks/useCreatePost";
 import MainButton from "../Button/MainButton";
 import TextInput from "../Input/TextInput";
 import TextareaInput from "../Input/TextareaInput";
+import { useAuthQueryStore } from "../../store/auth-store";
 
 const CreatePostModal = () => {
   const { handleSubmit, loading, onSubmit, control, onOpen, isOpen, onClose } =
     useCreatePost();
   const initialRef = useRef(null);
+  const { authStore } = useAuthQueryStore();
+  const jwtToken = authStore.jwtToken;
+
+  if (!jwtToken) {
+    return null;
+  }
 
   return (
     <>

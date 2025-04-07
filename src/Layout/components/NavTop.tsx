@@ -22,6 +22,7 @@ import pic from "../../assets/profpic.jpeg";
 import ColorModeSwitch from "../../components/ColorModeSwitch";
 import CreatePostModal from "../../components/modal/CreatePostModal";
 import { useAuthQueryStore } from "../../store/auth-store";
+import { useCommunityStore } from "../../store/community-store";
 import { useUserStore } from "../../store/user-store";
 import Login from "./Login";
 import Register from "./Register";
@@ -31,6 +32,7 @@ const NavTop = () => {
   const { picture, resetUser } = useUserStore();
   const queryClient = useQueryClient();
   const { authStore, logout, isOpen, onOpen, onClose } = useAuthQueryStore();
+  const { clearCommunities } = useCommunityStore();
   const jwtToken = authStore.jwtToken;
   const handleLoginClick = (value: boolean) => {
     setIsLogin(value);
@@ -43,6 +45,7 @@ const NavTop = () => {
       resetUser();
       queryClient.setQueryData(["user"], null);
       logout();
+      clearCommunities();
     }, 200);
   };
 

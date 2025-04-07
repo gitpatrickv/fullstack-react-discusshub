@@ -20,9 +20,9 @@ const useGetAllPosts = ({
     queryFn: async ({ pageParam = 0 }) => {
       const { data } = await apiClient.get<GetAllPost>(`/post`, {
         params: {
+          communityName: communityName,
           pageNo: pageParam,
           pageSize: pageSize,
-          communityName: communityName,
           sortDirection: sortDirection,
         },
       });

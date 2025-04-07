@@ -7,10 +7,11 @@ import {
   Text,
   useColorMode,
 } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 import ReactTimeAgo from "react-time-ago";
 import pic from "../../assets/profpic.jpeg";
-import { Post } from "../../entities/Post";
-import { useNavigate } from "react-router-dom";
+import { Community, Post } from "../../entities/Post";
+import { useCommunityStore } from "../../store/community-store";
 interface Props {
   post: Post;
 }
@@ -24,11 +25,13 @@ const PostCard = ({ post }: Props) => {
     .replace(/[/ ]/g, "_");
 
   const navigate = useNavigate();
+  const { addCommunity } = useCommunityStore();
 
-  const handleNavigateClick = () => {
+  const handleNavigateClick = (community: Community) => {
     navigate(
       `/${post.community.communityName}/post/${post.postId}/${formattedPostTitle}`
     );
+    addCommunity(community);
   };
 
   return (
@@ -41,7 +44,7 @@ const PostCard = ({ post }: Props) => {
         _hover={{ bg: colorMode === "dark" ? "gray.700" : "#E0E0E0" }}
         transition="all 0.2s"
         borderRadius="lg"
-        onClick={handleNavigateClick}
+        onClick={() => handleNavigateClick(post.community)}
       >
         <Flex alignItems="center" gap={2} fontSize="sm">
           <Avatar src={pic} size="xs" />

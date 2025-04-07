@@ -1,26 +1,16 @@
-import { Box, Center, Select, Spinner } from "@chakra-ui/react";
-import { useState } from "react";
+import { Center, Spinner, Box } from "@chakra-ui/react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import PostCard from "../../components/Post/PostCard";
 import useGetAllPosts from "../../hooks/useGetAllPosts";
+import { useParams } from "react-router-dom";
 
-const HomePage = () => {
-  const sort = [
-    { name: "Latest", value: "DESC" },
-    { name: "Oldest", value: "ASC" },
-  ];
-
-  const [sortDirection, setSortDirection] = useState("DESC");
+const CommunityPage = () => {
+  const params = useParams<{ communityName: string }>();
+  const communityName = params.communityName;
   const { data, fetchNextPage, hasNextPage, isLoading } = useGetAllPosts({
     pageSize: 12,
-    sortDirection: sortDirection,
+    communityName: communityName,
   });
-
-  const handleSortDirectionChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setSortDirection(event.target.value);
-  };
 
   const fetchData =
     data?.pages.reduce((total, page) => total + page.models.length, 0) || 0;
@@ -35,17 +25,6 @@ const HomePage = () => {
 
   return (
     <Box padding={2}>
-      <Select
-        width="120px"
-        onChange={handleSortDirectionChange}
-        value={sortDirection}
-      >
-        {sort.map((value) => (
-          <option key={value.value} value={value.value}>
-            {value.name}
-          </option>
-        ))}
-      </Select>
       <InfiniteScroll
         dataLength={fetchData}
         next={fetchNextPage}
@@ -60,4 +39,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default CommunityPage;

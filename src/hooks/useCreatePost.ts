@@ -1,5 +1,5 @@
 import { useDisclosure } from "@chakra-ui/react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { axiosInstance } from "../services/api-client";
@@ -15,6 +15,7 @@ const apiClient = axiosInstance;
 const useCreatePost = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const errorFields = ["title", "content"];
+  const queryClient = useQueryClient();
   const { handleSubmit, setError, control } = useForm<CreatePostProps>();
   const [loading, setLoading] = useState(false);
 
@@ -22,7 +23,7 @@ const useCreatePost = () => {
     mutationFn: (data: CreatePostProps) =>
       apiClient.post("/post", data).then((res) => res.data),
 
-    onSuccess: () => {
+    onSuccess: (response) => {
       setLoading(false);
       onClose();
     },
