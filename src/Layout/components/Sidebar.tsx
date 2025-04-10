@@ -1,9 +1,8 @@
 import { Avatar, Box, Flex, Text, useColorMode } from "@chakra-ui/react";
-import { IoAddOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import comPic from "../../assets/comunity.png";
-import MainButton from "../../components/Button/MainButton";
 import { useCommunityStore } from "../../store/community-store";
+import CreateCommunityModal from "./CreateCommunityModal";
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -54,10 +53,7 @@ const Sidebar = () => {
       >
         Communities
       </Text>
-      <MainButton borderRadius="full">
-        <IoAddOutline size="25px" />
-        <Text ml="5px">Create a Community</Text>
-      </MainButton>
+      <CreateCommunityModal />
       <Text>My community here</Text>
     </Box>
   );

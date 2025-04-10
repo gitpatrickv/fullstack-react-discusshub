@@ -1,62 +1,24 @@
-import { Box, Center, Select, Spinner } from "@chakra-ui/react";
 import { useState } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
-import PostCard from "../../components/Post/PostCard";
+import PostList from "../../components/Post/PostList";
 import useGetAllPosts from "../../hooks/useGetAllPosts";
 
 const HomePage = () => {
-  const sort = [
-    { name: "Latest", value: "DESC" },
-    { name: "Oldest", value: "ASC" },
-  ];
-
   const [sortDirection, setSortDirection] = useState("DESC");
   const { data, fetchNextPage, hasNextPage, isLoading } = useGetAllPosts({
     pageSize: 12,
     sortDirection: sortDirection,
   });
 
-  const handleSortDirectionChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setSortDirection(event.target.value);
-  };
-
-  const fetchData =
-    data?.pages.reduce((total, page) => total + page.models.length, 0) || 0;
-
-  if (isLoading) {
-    return (
-      <Center height="100vh">
-        <Spinner />
-      </Center>
-    );
-  }
-
   return (
-    <Box padding={2}>
-      <Select
-        width="120px"
-        onChange={handleSortDirectionChange}
-        value={sortDirection}
-      >
-        {sort.map((value) => (
-          <option key={value.value} value={value.value}>
-            {value.name}
-          </option>
-        ))}
-      </Select>
-      <InfiniteScroll
-        dataLength={fetchData}
-        next={fetchNextPage}
-        hasMore={!!hasNextPage}
-        loader={<Spinner />}
-      >
-        {data?.pages.map((page) =>
-          page.models.map((post) => <PostCard key={post.postId} post={post} />)
-        )}
-      </InfiniteScroll>
-    </Box>
+    <PostList
+      data={data}
+      isLoading={isLoading}
+      fetchNextPage={fetchNextPage}
+      hasNextPage={hasNextPage}
+      sortDirection={sortDirection}
+      setSortDirection={setSortDirection}
+      isCommunity={false}
+    />
   );
 };
 

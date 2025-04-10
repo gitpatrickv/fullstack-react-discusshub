@@ -1,41 +1,27 @@
-import { Center, Spinner, Box } from "@chakra-ui/react";
-import InfiniteScroll from "react-infinite-scroll-component";
-import PostCard from "../../components/Post/PostCard";
-import useGetAllPosts from "../../hooks/useGetAllPosts";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
+import PostList from "../../components/Post/PostList";
+import useGetAllPosts from "../../hooks/useGetAllPosts";
 
 const CommunityPage = () => {
-  const params = useParams<{ communityName: string }>();
-  const communityName = params.communityName;
+  const { communityName } = useParams<{ communityName: string }>();
+  const [sortDirection, setSortDirection] = useState("DESC");
   const { data, fetchNextPage, hasNextPage, isLoading } = useGetAllPosts({
     pageSize: 12,
     communityName: communityName,
+    sortDirection: sortDirection,
   });
 
-  const fetchData =
-    data?.pages.reduce((total, page) => total + page.models.length, 0) || 0;
-
-  if (isLoading) {
-    return (
-      <Center height="100vh">
-        <Spinner />
-      </Center>
-    );
-  }
-
   return (
-    <Box padding={2}>
-      <InfiniteScroll
-        dataLength={fetchData}
-        next={fetchNextPage}
-        hasMore={!!hasNextPage}
-        loader={<Spinner />}
-      >
-        {data?.pages.map((page) =>
-          page.models.map((post) => <PostCard key={post.postId} post={post} />)
-        )}
-      </InfiniteScroll>
-    </Box>
+    <PostList
+      data={data}
+      isLoading={isLoading}
+      fetchNextPage={fetchNextPage}
+      hasNextPage={hasNextPage}
+      sortDirection={sortDirection}
+      setSortDirection={setSortDirection}
+      isCommunity={true}
+    />
   );
 };
 
