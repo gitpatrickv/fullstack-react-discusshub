@@ -11,6 +11,8 @@ import ReactTimeAgo from "react-time-ago";
 import comPic from "../../assets/comunity.png";
 import pic from "../../assets/profpic.jpeg";
 import { Community, Post } from "../../entities/Post";
+import useJoinCommunity from "../../hooks/useJoinCommunity";
+import useGetAllCommunities from "../../Layout/hooks/useGetAllCommunities";
 import { useAuthQueryStore } from "../../store/auth-store";
 import { useCommunityStore } from "../../store/community-store";
 import MainButton from "../Button/MainButton";
@@ -30,14 +32,21 @@ const PostCard = ({ post, isCommunity }: Props) => {
     .replace(/[/ ]/g, "_");
 
   const navigate = useNavigate();
-  const { addCommunity } = useCommunityStore();
-
+  const { data: communities } = useGetAllCommunities();
+  const { addRecentCommunity } = useCommunityStore();
+  const { mutate: joinCommunity } = useJoinCommunity(
+    post.community.communityName
+  );
   const handleNavigateClick = (community: Community) => {
     navigate(
       `/${post.community.communityName}/post/${post.postId}/${formattedPostTitle}`
     );
-    addCommunity(community);
+    addRecentCommunity(community);
   };
+
+  const alreadyJoined = communities
+    ?.map((c) => c.communityId)
+    .includes(post.community.communityId);
 
   return (
     <Box position="relative">
@@ -73,13 +82,16 @@ const PostCard = ({ post, isCommunity }: Props) => {
         </Text>
         <Text mt="5px">{post.content}</Text>
       </Box>
-      {!isCommunity && !!jwtToken && (
+
+      {}
+      {!isCommunity && !!jwtToken && !alreadyJoined && (
         <MainButton
           borderRadius="full"
           height="25px"
           position="absolute"
           top="4"
           right="4"
+          onClick={() => joinCommunity()}
         >
           <Text fontSize="sm">Join</Text>
         </MainButton>

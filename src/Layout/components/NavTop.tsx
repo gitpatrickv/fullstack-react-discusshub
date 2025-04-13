@@ -44,6 +44,7 @@ const NavTop = () => {
     setTimeout(() => {
       resetUser();
       queryClient.setQueryData(["user"], null);
+      queryClient.setQueryData(["communities"], null);
       logout();
       clearCommunities();
     }, 200);

@@ -13,11 +13,19 @@ import MainButton from "../../components/Button/MainButton";
 import TextareaInput from "../../components/Input/TextareaInput";
 import TextInput from "../../components/Input/TextInput";
 import useCreateCommunity from "../../hooks/useCreateCommunity";
+import { useAuthQueryStore } from "../../store/auth-store";
 
 const CreateCommunityModal = () => {
   const initialRef = useRef(null);
   const { handleSubmit, loading, onSubmit, control, onOpen, isOpen, onClose } =
     useCreateCommunity();
+  const { authStore } = useAuthQueryStore();
+  const jwtToken = authStore.jwtToken;
+
+  if (!jwtToken) {
+    return null;
+  }
+
   return (
     <>
       <MainButton borderRadius="full" onClick={onOpen} mt="10px">

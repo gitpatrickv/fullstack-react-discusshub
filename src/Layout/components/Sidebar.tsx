@@ -1,18 +1,14 @@
-import { Avatar, Box, Flex, Text, useColorMode } from "@chakra-ui/react";
-import { useNavigate } from "react-router-dom";
-import comPic from "../../assets/comunity.png";
+import { Box, Divider, Text, useColorMode } from "@chakra-ui/react";
+
 import { useCommunityStore } from "../../store/community-store";
+import useGetAllCommunities from "../hooks/useGetAllCommunities";
+import CommunityCard from "./CommunityCard";
 import CreateCommunityModal from "./CreateCommunityModal";
 
 const Sidebar = () => {
-  const navigate = useNavigate();
   const { colorMode } = useColorMode();
-  const { communities } = useCommunityStore();
-
-  const handleNavigateClick = (name: string) => {
-    navigate(`/${name}`);
-  };
-
+  const { recentCommunities } = useCommunityStore();
+  const { data } = useGetAllCommunities();
   return (
     <Box
       borderRadius="none"
@@ -22,39 +18,35 @@ const Sidebar = () => {
       borderColor={colorMode === "dark" ? "gray.700" : "gray.200"}
       width="250px"
     >
-      {communities.length >= 1 && (
+      {recentCommunities.length >= 1 && (
         <>
           <Text fontSize="xl" fontWeight="semibold">
             Recent
           </Text>
-          {[...communities].reverse().map((com) => (
-            <Flex
-              alignItems="center"
-              gap={2}
-              mt="5px"
-              cursor="pointer"
-              _hover={{ bg: colorMode === "dark" ? "gray.700" : "#E0E0E0" }}
-              transition="all 0.2s"
-              borderRadius="lg"
-              padding={2}
-              key={com.communityId}
-              onClick={() => handleNavigateClick(com.communityName)}
-            >
-              <Avatar src={com.communityPhotoUrl || comPic} size="sm" />
-              <Text fontWeight="semibold">{com.communityName}</Text>
-            </Flex>
+          {[...recentCommunities].reverse().map((community) => (
+            <CommunityCard key={community.communityId} community={community} />
           ))}
         </>
       )}
-      <Text
-        fontSize="xl"
-        fontWeight="semibold"
-        mt={communities.length >= 1 ? "10px" : 0}
-      >
-        Communities
-      </Text>
-      <CreateCommunityModal />
-      <Text>My community here</Text>
+      {recentCommunities.length >= 1 && data && data?.length >= 1 && (
+        <Divider
+          border="1px solid"
+          borderColor={colorMode === "dark" ? "gray.700" : "gray.200"}
+          mt="10px"
+          mb="10px"
+        />
+      )}
+      {data && data?.length >= 1 && (
+        <>
+          <Text fontSize="xl" fontWeight="semibold">
+            Communities
+          </Text>
+          <CreateCommunityModal />
+          {data?.map((community) => (
+            <CommunityCard key={community.communityId} community={community} />
+          ))}
+        </>
+      )}
     </Box>
   );
 };

@@ -56,6 +56,7 @@ const PostList = ({
         width="120px"
         onChange={handleSortDirectionChange}
         value={sortDirection}
+        borderRadius="none"
       >
         {sort.map((value) => (
           <option key={value.value} value={value.value}>

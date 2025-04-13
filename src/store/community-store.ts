@@ -3,32 +3,38 @@ import { createJSONStorage, persist } from "zustand/middleware";
 import { Community } from "../entities/Post";
 
 interface CommunityStore {
-  communities: Community[];
-  addCommunity: (community: Community) => void;
+  recentCommunities: Community[];
+  addRecentCommunity: (community: Community) => void;
   clearCommunities: () => void;
 }
 
 export const useCommunityStore = create<CommunityStore>()(
   persist(
     (set, get) => ({
-      communities: [],
-      addCommunity: (community: Community) => {
-        const { communities } = get();
+      recentCommunities: [],
+      addRecentCommunity: (community: Community) => {
+        const { recentCommunities } = get();
 
-        if (!communities.some((c) => c.communityId === community.communityId)) {
-          if (communities.length < 5) {
-            set({ communities: [...communities, community] });
+        if (
+          !recentCommunities.some(
+            (c) => c.communityId === community.communityId
+          )
+        ) {
+          if (recentCommunities.length < 5) {
+            set({ recentCommunities: [...recentCommunities, community] });
           } else {
-            set({ communities: [...communities.slice(1), community] });
+            set({
+              recentCommunities: [...recentCommunities.slice(1), community],
+            });
           }
         }
       },
       clearCommunities: () => {
-        set({ communities: [] });
+        set({ recentCommunities: [] });
       },
     }),
     {
-      name: "community-storage",
+      name: "recent-community-storage",
       storage: createJSONStorage(() => localStorage),
     }
   )

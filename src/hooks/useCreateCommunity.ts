@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { axiosInstance } from "../services/api-client";
+import { Community } from "../entities/Post";
 
 interface CreateCommunityProps {
   communityName: string;
@@ -24,6 +25,12 @@ const useCreateCommunity = () => {
 
     onSuccess: (response) => {
       setLoading(false);
+
+      queryClient.setQueryData<Community[]>(["communities"], (old = []) => [
+        response,
+        ...old,
+      ]);
+
       onClose();
     },
     onError: (error: any) => {

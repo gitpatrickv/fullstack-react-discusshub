@@ -27,6 +27,9 @@ const useLogin = () => {
       queryClient.invalidateQueries({
         queryKey: ["user"],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["communities"],
+      });
       const jwtToken = response.jwtToken;
       setJwtToken(jwtToken);
       const role = response.role;
