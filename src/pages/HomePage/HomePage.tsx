@@ -6,6 +6,7 @@ const HomePage = () => {
   const [sortDirection, setSortDirection] = useState("DESC");
   const { data, fetchNextPage, hasNextPage, isLoading } = useGetAllPosts({
     pageSize: 12,
+    communityName: "HOME",
     sortDirection: sortDirection,
   });
 
