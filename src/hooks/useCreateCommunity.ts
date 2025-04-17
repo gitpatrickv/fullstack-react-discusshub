@@ -16,7 +16,8 @@ const useCreateCommunity = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const errorFields = ["communityName", "description"];
   const queryClient = useQueryClient();
-  const { handleSubmit, setError, control } = useForm<CreateCommunityProps>();
+  const { handleSubmit, setError, control, reset } =
+    useForm<CreateCommunityProps>();
   const [loading, setLoading] = useState(false);
 
   const mutation = useMutation({
@@ -25,13 +26,12 @@ const useCreateCommunity = () => {
 
     onSuccess: (response) => {
       setLoading(false);
-
+      onClose();
+      reset();
       queryClient.setQueryData<Community[]>(["communities"], (old = []) => [
         response,
         ...old,
       ]);
-
-      onClose();
     },
     onError: (error: any) => {
       setLoading(false);

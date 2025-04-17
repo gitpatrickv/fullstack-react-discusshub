@@ -23,7 +23,7 @@ const PostDetailPage = () => {
     <Box padding={3}>
       <Flex alignItems="center" gap={2} fontSize="sm" mt="10px">
         <Avatar src={pic} size="xs" />
-        <Text>{post.user.name}</Text>
+        <Text>{post.user.username}</Text>
         <Text>
           <ReactTimeAgo date={time} locale="en-US" />
         </Text>

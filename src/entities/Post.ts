@@ -1,8 +1,9 @@
 import PageResponse from "./PageResponse";
-import { User } from "./User";
 
-export interface PostUserInfo extends User {
-  name: string;
+export interface PostUserInfo {
+  userId: number;
+  username: string;
+  photoUrl?: string;
 }
 
 export interface Community {

@@ -9,7 +9,7 @@ import { useAuthQueryStore } from "../../store/auth-store";
 const apiClient = axiosInstance;
 
 const useRegister = () => {
-  const errorFields = ["name", "email", "password", "confirmPassword"];
+  const errorFields = ["username", "email", "password", "confirmPassword"];
   const queryClient = useQueryClient();
   const { handleSubmit, setError, control } = useForm<UserDetails>({
     resolver: zodResolver(schema),

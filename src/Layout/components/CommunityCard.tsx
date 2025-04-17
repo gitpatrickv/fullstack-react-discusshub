@@ -12,7 +12,7 @@ const CommunityCard = ({ community }: Props) => {
   const { colorMode } = useColorMode();
   const { addRecentCommunity } = useCommunityStore();
   const handleNavigateClick = (name: string) => {
-    navigate(`/${name}`);
+    navigate(`community/${name}`);
     addRecentCommunity(community);
   };
   return (

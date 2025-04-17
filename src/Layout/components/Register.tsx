@@ -32,9 +32,9 @@ const Register = () => {
       <Stack spacing={3}>
         <TextInput
           control={control}
-          name="name"
+          name="username"
           loading={loading}
-          placeholder="Name"
+          placeholder="Username"
         />
         <TextInput
           control={control}

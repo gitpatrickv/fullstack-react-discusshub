@@ -17,15 +17,15 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: "/profile",
+        path: "/user/:username",
         element: <ProfilePage />,
       },
       {
-        path: `/:communityName/post/:postId/:title`,
+        path: `community/:communityName/post/:postId/:title`,
         element: <PostDetailPage />,
       },
       {
-        path: `/:communityName`,
+        path: `community/:communityName`,
         element: <CommunityPage />,
       },
     ],

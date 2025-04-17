@@ -2,10 +2,10 @@ import { create } from "zustand";
 
 interface UserStore {
   email: string | null;
-  name: string | null;
+  username: string | null;
   picture: string | null;
   gender: string | null;
-  setName: (name: string | null) => void;
+  setUsername: (name: string | null) => void;
   setPicture: (picture: string | null) => void;
   setGender: (g: string | null) => void;
   setEmail: (e: string | null) => void;
@@ -13,17 +13,17 @@ interface UserStore {
 }
 
 export const useUserStore = create<UserStore>((set) => ({
-  name: null,
+  username: null,
   picture: null,
   gender: null,
   email: null,
-  setName: (name: string | null) => set({ name: name }),
+  setUsername: (name: string | null) => set({ username: name }),
   setPicture: (picture: string | null) => set({ picture: picture }),
   setGender: (g: string | null) => set({ gender: g }),
   setEmail: (e: string | null) => set({ email: e }),
   resetUser: () =>
     set({
-      name: null,
+      username: null,
       picture: null,
       gender: null,
       email: null,

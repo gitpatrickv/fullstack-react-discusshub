@@ -19,16 +19,17 @@ const CreateCommunityModal = () => {
   const initialRef = useRef(null);
   const { handleSubmit, loading, onSubmit, control, onOpen, isOpen, onClose } =
     useCreateCommunity();
-  const { authStore } = useAuthQueryStore();
+  const { authStore, onOpen: onOpenLoginModal } = useAuthQueryStore();
   const jwtToken = authStore.jwtToken;
-
-  if (!jwtToken) {
-    return null;
-  }
 
   return (
     <>
-      <MainButton borderRadius="full" onClick={onOpen} mt="10px">
+      <MainButton
+        borderRadius="full"
+        onClick={jwtToken ? onOpen : onOpenLoginModal}
+        mt="10px"
+        mb="10px"
+      >
         <IoAddOutline size="25px" />
         <Text ml="5px">Create a Community</Text>
       </MainButton>
@@ -68,8 +69,8 @@ const CreateCommunityModal = () => {
                 mt="10px"
               />
               <Flex justifyContent="end" mt="15px">
-                <MainButton type="submit" borderRadius="full" width="120px">
-                  Submit
+                <MainButton type="submit" borderRadius="full">
+                  Create Community
                 </MainButton>
               </Flex>
             </ModalBody>

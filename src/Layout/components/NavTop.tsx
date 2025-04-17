@@ -29,7 +29,7 @@ import Register from "./Register";
 const NavTop = () => {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState<boolean>(true);
-  const { picture, resetUser } = useUserStore();
+  const { picture, resetUser, username } = useUserStore();
   const queryClient = useQueryClient();
   const { authStore, logout, isOpen, onOpen, onClose } = useAuthQueryStore();
   const { clearCommunities } = useCommunityStore();
@@ -69,7 +69,7 @@ const NavTop = () => {
               <Avatar src={picture || pic} size="sm" />
             </MenuButton>
             <MenuList borderRadius="none" position="relative" py={0}>
-              <Link to="/profile">
+              <Link to={`/user/${username}`}>
                 <MenuItem paddingBottom={3} paddingTop={3}>
                   <Avatar src={picture || pic} size="xs" />
                   <Text ml="16px">Profile</Text>

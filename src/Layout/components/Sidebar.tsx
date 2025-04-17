@@ -26,27 +26,22 @@ const Sidebar = () => {
           {[...recentCommunities].reverse().map((community) => (
             <CommunityCard key={community.communityId} community={community} />
           ))}
+          <Divider
+            border="1px solid"
+            borderColor={colorMode === "dark" ? "gray.700" : "gray.200"}
+            mt="10px"
+            mb="10px"
+          />
         </>
       )}
-      {recentCommunities.length >= 1 && data && data?.length >= 1 && (
-        <Divider
-          border="1px solid"
-          borderColor={colorMode === "dark" ? "gray.700" : "gray.200"}
-          mt="10px"
-          mb="10px"
-        />
-      )}
-      {data && data?.length >= 1 && (
-        <>
-          <Text fontSize="xl" fontWeight="semibold">
-            Communities
-          </Text>
-          <CreateCommunityModal />
-          {data?.map((community) => (
-            <CommunityCard key={community.communityId} community={community} />
-          ))}
-        </>
-      )}
+
+      <Text fontSize="xl" fontWeight="semibold">
+        Communities
+      </Text>
+      <CreateCommunityModal />
+      {data?.map((community) => (
+        <CommunityCard key={community.communityId} community={community} />
+      ))}
     </Box>
   );
 };

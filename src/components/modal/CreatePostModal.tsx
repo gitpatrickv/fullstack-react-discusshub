@@ -71,14 +71,18 @@ const CreatePostModal = () => {
                 onChange={handleCommunityNameChange}
                 value={communityName}
               >
-                {communities?.map((community) => (
-                  <option
-                    key={community.communityId}
-                    value={community.communityName}
-                  >
-                    {community.communityName}
-                  </option>
-                ))}
+                {communities && communities.length > 0 ? (
+                  communities.map((community) => (
+                    <option
+                      key={community.communityId}
+                      value={community.communityName}
+                    >
+                      {community.communityName}
+                    </option>
+                  ))
+                ) : (
+                  <option value={communityName}>public</option>
+                )}
               </Select>
               <TextInput
                 control={control}

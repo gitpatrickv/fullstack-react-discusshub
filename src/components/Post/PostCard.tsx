@@ -39,9 +39,19 @@ const PostCard = ({ post, isCommunity }: Props) => {
   );
   const handleNavigateClick = (community: Community) => {
     navigate(
-      `/${post.community.communityName}/post/${post.postId}/${formattedPostTitle}`
+      `/community/${post.community.communityName}/post/${post.postId}/${formattedPostTitle}`
     );
     addRecentCommunity(community);
+  };
+
+  const handleNavigateCommunityClick = () => {
+    navigate(`/community/${post.community.communityName}`);
+    addRecentCommunity(post.community);
+  };
+
+  const handleNavigateProfileClick = () => {
+    navigate(`/user/${post.user.username}`);
+    addRecentCommunity(post.community);
   };
 
   const alreadyJoined = communities
@@ -69,8 +79,17 @@ const PostCard = ({ post, isCommunity }: Props) => {
               size="xs"
             />
           )}
-          <Text fontWeight="semibold">
-            {isCommunity ? post.user.name : post.community.communityName}
+          <Text
+            fontWeight="semibold"
+            _hover={{ color: "#165BB7" }}
+            onClick={(e) => {
+              e.stopPropagation();
+              isCommunity
+                ? handleNavigateProfileClick()
+                : handleNavigateCommunityClick();
+            }}
+          >
+            {isCommunity ? post.user.username : post.community.communityName}
           </Text>
           <Text fontSize="xl">·</Text>
           <Text>
@@ -83,7 +102,6 @@ const PostCard = ({ post, isCommunity }: Props) => {
         <Text mt="5px">{post.content}</Text>
       </Box>
 
-      {}
       {!isCommunity && !!jwtToken && !alreadyJoined && (
         <MainButton
           borderRadius="full"
