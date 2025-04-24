@@ -38,7 +38,7 @@ const CreatePostModal = () => {
 
   return (
     <>
-      <MainButton mr="10px" borderRadius="full" onClick={onOpen}>
+      <MainButton borderRadius="full" onClick={onOpen}>
         <IoAddOutline size="25px" />
         <Text ml="5px">Create Post</Text>
       </MainButton>

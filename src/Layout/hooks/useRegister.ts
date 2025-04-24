@@ -15,7 +15,7 @@ const useRegister = () => {
     resolver: zodResolver(schema),
   });
   const [loading, setLoading] = useState(false);
-  const { setJwtToken, setRole, onClose } = useAuthQueryStore();
+  const { setJwtToken, onClose } = useAuthQueryStore();
 
   const mutation = useMutation({
     mutationFn: (data: UserDetails) =>
@@ -27,8 +27,6 @@ const useRegister = () => {
       });
       const jwtToken = response.jwtToken;
       setJwtToken(jwtToken);
-      const role = response.role;
-      setRole(role);
       onClose();
     },
     onError: (error: any) => {

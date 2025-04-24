@@ -11,6 +11,7 @@ export interface UserDetails {
 export interface User extends UserDetails {
   userId: number;
   photoUrl?: string;
+  role: string;
 }
 
 export const schema = z

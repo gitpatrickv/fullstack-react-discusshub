@@ -61,12 +61,16 @@ const NavTop = () => {
 
   return (
     <>
-      <Flex justifyContent="end" alignItems="center">
+      <Flex justifyContent="end" alignItems="center" gap={2}>
         <CreatePostModal />
+        <ColorModeSwitch />
         {jwtToken ? (
           <Menu>
-            <MenuButton aria-label="menu" userSelect="none" mr="5px">
-              <Avatar src={picture || pic} size="sm" />
+            <MenuButton aria-label="menu" userSelect="none">
+              <Flex alignItems="center" gap={2}>
+                <Avatar src={picture || pic} size="sm" />
+                <Text>{username}</Text>
+              </Flex>
             </MenuButton>
             <MenuList borderRadius="none" position="relative" py={0}>
               <Link to={`/user/${username}`}>
@@ -95,7 +99,6 @@ const NavTop = () => {
             </Text>
           </>
         )}
-        <ColorModeSwitch />
       </Flex>
 
       <Box>

@@ -8,20 +8,22 @@ import useGetCurrentUserInfo from "./hooks/useGetCurrentUserInfo";
 
 const Layout = () => {
   const { data: getUserInfo, isLoading } = useGetCurrentUserInfo();
-  const { setUsername, setPicture, setGender, setEmail } = useUserStore();
+  const { setUsername, setPicture, setGender, setRole, setUserId } =
+    useUserStore();
   useEffect(() => {
     if (getUserInfo) {
+      setUserId(getUserInfo.userId);
       setUsername(getUserInfo.username);
       setPicture(getUserInfo.photoUrl || null);
       setGender(getUserInfo.gender);
-      setEmail(getUserInfo.email);
+      setRole(getUserInfo.role || null);
     }
   }, [getUserInfo]);
   return (
     <Flex minWidth="1440px" flexDirection="column">
       {isLoading ? <Skeleton height="60px" /> : <Navbar />}
       <Grid
-        templateColumns="0.3fr 0.4fr 1.4fr 0.3fr"
+        templateColumns="0.3fr 0.3fr 1.4fr 0.3fr"
         templateAreas={`"sidebar empty content asideRight"`}
         gap={4}
       >

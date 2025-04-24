@@ -10,11 +10,12 @@ import { useNavigate } from "react-router-dom";
 import ReactTimeAgo from "react-time-ago";
 import comPic from "../../assets/comunity.png";
 import pic from "../../assets/profpic.jpeg";
-import { Community, Post } from "../../entities/Post";
+import { Post } from "../../entities/Post";
 import useJoinCommunity from "../../hooks/useJoinCommunity";
 import useGetAllCommunities from "../../Layout/hooks/useGetAllCommunities";
 import { useAuthQueryStore } from "../../store/auth-store";
 import { useCommunityStore } from "../../store/community-store";
+import { usePostStore } from "../../store/post-store";
 import MainButton from "../Button/MainButton";
 interface Props {
   post: Post;
@@ -34,14 +35,17 @@ const PostCard = ({ post, isCommunity }: Props) => {
   const navigate = useNavigate();
   const { data: communities } = useGetAllCommunities();
   const { addRecentCommunity } = useCommunityStore();
+  const { addRecentlyViewedPost } = usePostStore();
   const { mutate: joinCommunity } = useJoinCommunity(
     post.community.communityName
   );
-  const handleNavigateClick = (community: Community) => {
+  const handleNavigateClick = () => {
     navigate(
       `/community/${post.community.communityName}/post/${post.postId}/${formattedPostTitle}`
     );
-    addRecentCommunity(community);
+    setTimeout(() => {
+      addRecentlyViewedPost(post);
+    }, 1000);
   };
 
   const handleNavigateCommunityClick = () => {
@@ -51,7 +55,6 @@ const PostCard = ({ post, isCommunity }: Props) => {
 
   const handleNavigateProfileClick = () => {
     navigate(`/user/${post.user.username}`);
-    addRecentCommunity(post.community);
   };
 
   const alreadyJoined = communities
@@ -68,7 +71,7 @@ const PostCard = ({ post, isCommunity }: Props) => {
         _hover={{ bg: colorMode === "dark" ? "gray.700" : "#E0E0E0" }}
         transition="all 0.2s"
         borderRadius="lg"
-        onClick={() => handleNavigateClick(post.community)}
+        onClick={handleNavigateClick}
       >
         <Flex alignItems="center" gap={2} fontSize="sm">
           {isCommunity ? (

@@ -1,4 +1,14 @@
-import { Avatar, Box, Center, Flex, Spinner, Text } from "@chakra-ui/react";
+import {
+  Avatar,
+  Box,
+  Card,
+  Center,
+  Flex,
+  Grid,
+  GridItem,
+  Spinner,
+  Text,
+} from "@chakra-ui/react";
 import { useParams } from "react-router-dom";
 import ReactTimeAgo from "react-time-ago";
 import pic from "../../assets/profpic.jpeg";
@@ -20,19 +30,26 @@ const PostDetailPage = () => {
   const time = new Date(post.createdDate);
 
   return (
-    <Box padding={3}>
-      <Flex alignItems="center" gap={2} fontSize="sm" mt="10px">
-        <Avatar src={pic} size="xs" />
-        <Text>{post.user.username}</Text>
-        <Text>
-          <ReactTimeAgo date={time} locale="en-US" />
-        </Text>
-      </Flex>
-      <Text fontSize="xl" fontWeight="semibold" mt="5px">
-        {post.title}
-      </Text>
-      <Text mt="5px">{post.content}</Text>
-    </Box>
+    <Grid templateColumns="0.7fr 0.3fr" templateAreas={`"left right"`} gap={4}>
+      <GridItem area="left">
+        <Box padding={3}>
+          <Flex alignItems="center" gap={2} fontSize="sm" mt="10px">
+            <Avatar src={pic} size="xs" />
+            <Text>{post.user.username}</Text>
+            <Text>
+              <ReactTimeAgo date={time} locale="en-US" />
+            </Text>
+          </Flex>
+          <Text fontSize="xl" fontWeight="semibold" mt="5px">
+            {post.title}
+          </Text>
+          <Text mt="5px">{post.content}</Text>
+        </Box>
+      </GridItem>
+      <GridItem area="right">
+        <Card>TEST</Card>
+      </GridItem>
+    </Grid>
   );
 };
 
