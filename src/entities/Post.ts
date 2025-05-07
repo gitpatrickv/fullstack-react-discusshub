@@ -18,6 +18,7 @@ export interface Post {
   postId: number;
   title: string;
   content: string;
+  status: string;
   user: PostUserInfo;
   community: Community;
 }

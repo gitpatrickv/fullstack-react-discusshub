@@ -34,8 +34,7 @@ const HomePage = () => {
               alignItems="center"
               justifyContent="space-between"
               px={4}
-              pt={3}
-              fontFamily={"sans-serif"}
+              py={2}
             >
               <Text fontSize="lg" fontWeight="semibold">
                 Just Viewed

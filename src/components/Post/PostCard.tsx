@@ -17,6 +17,7 @@ import { useAuthQueryStore } from "../../store/auth-store";
 import { useCommunityStore } from "../../store/community-store";
 import { usePostStore } from "../../store/post-store";
 import MainButton from "../Button/MainButton";
+import PostButtons from "./PostButtons";
 interface Props {
   post: Post;
   isCommunity: boolean;
@@ -62,7 +63,7 @@ const PostCard = ({ post, isCommunity }: Props) => {
     .includes(post.community.communityId);
 
   return (
-    <Box position="relative">
+    <>
       <Divider mb="5px" mt="5px" />
       <Box
         px={3}
@@ -72,6 +73,7 @@ const PostCard = ({ post, isCommunity }: Props) => {
         transition="all 0.2s"
         borderRadius="lg"
         onClick={handleNavigateClick}
+        position="relative"
       >
         <Flex alignItems="center" gap={2} fontSize="sm">
           {isCommunity ? (
@@ -103,21 +105,26 @@ const PostCard = ({ post, isCommunity }: Props) => {
           {post.title}
         </Text>
         <Text mt="5px">{post.content}</Text>
-      </Box>
 
-      {!isCommunity && !!jwtToken && !alreadyJoined && (
-        <MainButton
-          borderRadius="full"
-          height="25px"
-          position="absolute"
-          top="4"
-          right="4"
-          onClick={() => joinCommunity()}
-        >
-          <Text fontSize="sm">Join</Text>
-        </MainButton>
-      )}
-    </Box>
+        <PostButtons />
+
+        {!isCommunity && !!jwtToken && !alreadyJoined && (
+          <MainButton
+            borderRadius="full"
+            height="25px"
+            position="absolute"
+            top="3"
+            right="3"
+            onClick={(e) => {
+              e.stopPropagation();
+              joinCommunity();
+            }}
+          >
+            <Text fontSize="sm">Join</Text>
+          </MainButton>
+        )}
+      </Box>
+    </>
   );
 };
 export default PostCard;
