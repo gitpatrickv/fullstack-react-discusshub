@@ -4,18 +4,19 @@ export interface UserDetails {
   email: string;
   password: string;
   confirmPassword: string;
-  name: string;
+  username: string;
   gender: string;
 }
 
 export interface User extends UserDetails {
   userId: number;
   photoUrl?: string;
+  role: string;
 }
 
 export const schema = z
   .object({
-    name: z.string().min(1, "Name is required"),
+    username: z.string().min(1, "Username is required"),
     email: z.string().min(1, "Email is required").email(),
     gender: z.string().min(1, "Gender is required"),
     password: z

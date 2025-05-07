@@ -33,7 +33,7 @@ const Login = () => {
       <Input
         onChange={handleInputChange}
         mb={4}
-        placeholder="Email"
+        placeholder="Username or Email"
         borderRadius="none"
         ref={inputRef}
       />

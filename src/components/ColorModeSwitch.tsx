@@ -20,7 +20,6 @@ const ColorModeSwitch = () => {
       background="none"
       _hover={{ background: "none" }}
       _active={{ background: "none" }}
-      mr="5px"
     />
   );
 };

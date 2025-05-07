@@ -14,23 +14,25 @@ import {
   ModalOverlay,
   Text,
 } from "@chakra-ui/react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { SlLogout } from "react-icons/sl";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import pic from "../../assets/profpic.jpeg";
-
-import { useQueryClient } from "@tanstack/react-query";
 import ColorModeSwitch from "../../components/ColorModeSwitch";
+import CreatePostModal from "../../components/modal/CreatePostModal";
 import { useAuthQueryStore } from "../../store/auth-store";
+import { useCommunityStore } from "../../store/community-store";
 import { useUserStore } from "../../store/user-store";
 import Login from "./Login";
 import Register from "./Register";
 const NavTop = () => {
   const navigate = useNavigate();
   const [isLogin, setIsLogin] = useState<boolean>(true);
-  const { picture, resetUser } = useUserStore();
+  const { picture, resetUser, username } = useUserStore();
   const queryClient = useQueryClient();
   const { authStore, logout, isOpen, onOpen, onClose } = useAuthQueryStore();
+  const { clearCommunities } = useCommunityStore();
   const jwtToken = authStore.jwtToken;
   const handleLoginClick = (value: boolean) => {
     setIsLogin(value);
@@ -42,7 +44,9 @@ const NavTop = () => {
     setTimeout(() => {
       resetUser();
       queryClient.setQueryData(["user"], null);
+      queryClient.setQueryData(["communities"], null);
       logout();
+      clearCommunities();
     }, 200);
   };
 
@@ -52,22 +56,29 @@ const NavTop = () => {
     _hover: {
       textDecoration: "underline",
     },
-    color: "white",
+    mr: "10px",
   };
 
   return (
     <>
-      {jwtToken ? (
-        <Flex justifyContent="end" alignItems="center">
+      <Flex justifyContent="end" alignItems="center" gap={2}>
+        <CreatePostModal />
+        <ColorModeSwitch />
+        {jwtToken ? (
           <Menu>
-            <MenuButton aria-label="menu" userSelect="none" mr="5px">
-              <Avatar src={picture || pic} size="sm" />
+            <MenuButton aria-label="menu" userSelect="none">
+              <Flex alignItems="center" gap={2}>
+                <Avatar src={picture || pic} size="sm" />
+                <Text>{username}</Text>
+              </Flex>
             </MenuButton>
             <MenuList borderRadius="none" position="relative" py={0}>
-              <MenuItem paddingBottom={3} paddingTop={3}>
-                <Avatar src={picture || pic} size="xs" />
-                <Text ml="16px">View Profile</Text>
-              </MenuItem>
+              <Link to={`/user/${username}`}>
+                <MenuItem paddingBottom={3} paddingTop={3}>
+                  <Avatar src={picture || pic} size="xs" />
+                  <Text ml="16px">Profile</Text>
+                </MenuItem>
+              </Link>
               <MenuItem
                 onClick={handleLogoutClick}
                 paddingBottom={3}
@@ -78,22 +89,17 @@ const NavTop = () => {
               </MenuItem>
             </MenuList>
           </Menu>
-          <ColorModeSwitch />
-        </Flex>
-      ) : (
-        <Flex justifyContent="end">
-          <Text
-            mr="10px"
-            onClick={() => handleLoginClick(true)}
-            {...textStyles}
-          >
-            LOGIN
-          </Text>
-          <Text onClick={() => handleLoginClick(false)} {...textStyles}>
-            SIGNUP
-          </Text>
-        </Flex>
-      )}
+        ) : (
+          <>
+            <Text onClick={() => handleLoginClick(true)} {...textStyles}>
+              LOGIN
+            </Text>
+            <Text onClick={() => handleLoginClick(false)} {...textStyles}>
+              SIGNUP
+            </Text>
+          </>
+        )}
+      </Flex>
 
       <Box>
         <Modal isOpen={isOpen} onClose={onClose} size="md" isCentered>

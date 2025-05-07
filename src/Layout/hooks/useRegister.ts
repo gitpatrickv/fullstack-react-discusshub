@@ -9,13 +9,13 @@ import { useAuthQueryStore } from "../../store/auth-store";
 const apiClient = axiosInstance;
 
 const useRegister = () => {
-  const errorFields = ["name", "email", "password", "confirmPassword"];
+  const errorFields = ["username", "email", "password", "confirmPassword"];
   const queryClient = useQueryClient();
   const { handleSubmit, setError, control } = useForm<UserDetails>({
     resolver: zodResolver(schema),
   });
   const [loading, setLoading] = useState(false);
-  const { setJwtToken, setRole, onClose } = useAuthQueryStore();
+  const { setJwtToken, onClose } = useAuthQueryStore();
 
   const mutation = useMutation({
     mutationFn: (data: UserDetails) =>
@@ -27,8 +27,6 @@ const useRegister = () => {
       });
       const jwtToken = response.jwtToken;
       setJwtToken(jwtToken);
-      const role = response.role;
-      setRole(role);
       onClose();
     },
     onError: (error: any) => {

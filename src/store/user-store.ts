@@ -1,31 +1,37 @@
 import { create } from "zustand";
 
 interface UserStore {
-  email: string | null;
-  name: string | null;
+  userId: number | null;
+  username: string | null;
   picture: string | null;
   gender: string | null;
-  setName: (name: string | null) => void;
+  role: string | null;
+  setUserId: (id: number | null) => void;
+  setUsername: (name: string | null) => void;
   setPicture: (picture: string | null) => void;
   setGender: (g: string | null) => void;
-  setEmail: (e: string | null) => void;
+  setRole: (r: string | null) => void;
   resetUser: () => void;
 }
 
 export const useUserStore = create<UserStore>((set) => ({
-  name: null,
+  userId: null,
+  username: null,
   picture: null,
   gender: null,
   email: null,
-  setName: (name: string | null) => set({ name: name }),
+  role: null,
+  setUserId: (id: number | null) => set({ userId: id }),
+  setUsername: (name: string | null) => set({ username: name }),
   setPicture: (picture: string | null) => set({ picture: picture }),
   setGender: (g: string | null) => set({ gender: g }),
-  setEmail: (e: string | null) => set({ email: e }),
+  setRole: (r: string | null) => set({ role: r }),
   resetUser: () =>
     set({
-      name: null,
+      userId: null,
+      username: null,
       picture: null,
       gender: null,
-      email: null,
+      role: null,
     }),
 }));

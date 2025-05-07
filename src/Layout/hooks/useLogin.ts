@@ -3,7 +3,6 @@ import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { axiosInstance } from "../../services/api-client";
 import { useAuthQueryStore } from "../../store/auth-store";
-
 interface FormData {
   email: string;
   password: string;
@@ -14,8 +13,7 @@ const apiClient = axiosInstance;
 const useLogin = () => {
   const queryClient = useQueryClient();
   const [loading, setLoading] = useState(false);
-  const { setJwtToken, setRole, onClose } = useAuthQueryStore();
-
+  const { setJwtToken, onClose } = useAuthQueryStore();
   const { handleSubmit, setError, reset, control, setValue } =
     useForm<FormData>();
 
@@ -27,10 +25,11 @@ const useLogin = () => {
       queryClient.invalidateQueries({
         queryKey: ["user"],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["communities"],
+      });
       const jwtToken = response.jwtToken;
       setJwtToken(jwtToken);
-      const role = response.role;
-      setRole(role);
       reset();
       setLoading(false);
       onClose();
